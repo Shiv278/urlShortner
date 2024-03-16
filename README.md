@@ -51,7 +51,13 @@ Before running the project, make sure you have the following installed on your s
 1. Clone the repository to your local machine:
 
     ```bash
-    git clone <repository-url>
+    # HTTPS
+    git clone https://github.com/Shiv278/urlShortner.git
+    ```
+    OR
+    ```bash
+    # SSH
+    git clone git@github.com:Shiv278/urlShortner.git
     ```
 
 2. Navigate to the backend directory:
