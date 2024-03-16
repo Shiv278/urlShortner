@@ -19,10 +19,10 @@ jobs:
           go-version: ^1.17
 
       - name: Install dependencies
-        run: go mod tidy
+        run: cd ../../backend go mod tidy
 
       - name: Run tests
-        run: go test ./...
+        run: cd ../../backend go test ./...
 
       - name: Build application
         run: go build -o app
