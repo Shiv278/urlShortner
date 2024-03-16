@@ -35,3 +35,63 @@ The URL Shortener project is a web application designed to convert long URLs int
 ## Project Goals
 
 The goal of the URL Shortener project is to provide users with a reliable and user-friendly platform for creating and managing shortened URLs. By offering a comprehensive set of features including custom short URLs, URL analytics, and user authentication, the project aims to meet the diverse needs of users while ensuring the security and scalability of the application.
+
+## How to Start and Use the Project
+
+### Prerequisites
+
+Before running the project, make sure you have the following installed on your system:
+
+- [Node.js](https://nodejs.org/)
+- [GoLang](https://golang.org/)
+- [Redis](https://redis.io/)
+
+### Steps to Start the Backend Server
+
+1. Clone the repository to your local machine:
+
+    ```bash
+    git clone <repository-url>
+    ```
+
+2. Navigate to the backend directory:
+
+    ```bash
+    cd backend
+    ```
+
+3. Install dependencies:
+
+    ```bash
+    go mod tidy
+    ```
+
+4. Start the backend server:
+
+    ```bash
+    go run main.go
+    ```
+
+    The backend server should now be running on [http://localhost:8080](http://localhost:8080).
+
+### Steps to Start the Frontend Application
+
+1. Navigate to the frontend directory:
+
+    ```bash
+    cd frontend
+    ```
+
+2. Install dependencies:
+
+    ```bash
+    npm install
+    ```
+
+3. Start the frontend development server:
+
+    ```bash
+    npm start
+    ```
+
+    The frontend development server should now be running on [http://localhost:3000](http://localhost:3000). You can access the URL Shortener application in your web browser.
