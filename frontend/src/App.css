@@ -36,3 +36,38 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* Base styles for lines */
+.line {
+  position: fixed;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+/* Animation keyframes for the triangles */
+@keyframes formTriangle {
+  0% {
+    width: 0;
+    height: 0;
+    border-left: 0px solid transparent;
+    border-right: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    opacity: 0;
+  }
+  100% {
+    width: 200px;
+    height: 200px;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-bottom: 173.2px solid #00bcd4; /* Change color as needed */
+    opacity: 1;
+  }
+}
+
+/* Apply animation to the triangles */
+.line:hover {
+  animation: formTriangle 1s forwards;
+}
+
