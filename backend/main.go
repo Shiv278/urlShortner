@@ -4,6 +4,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -16,8 +17,9 @@ var (
 )
 
 type ShortURL struct {
-	OriginalURL string `json:"original_url"`
-	ShortURL    string `json:"short_url"`
+	OriginalURL        string `json:"original_url"`
+	ShortURL           string `json:"short_url"`
+	ExpirationDateTime string `json:"expiration_date_time"`
 }
 
 func generateShortURL() string {
@@ -37,9 +39,41 @@ func shortenURL(c *gin.Context) {
 		return
 	}
 
-	shortURL := generateShortURL()
+	if inputURL.OriginalURL == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "URL not provided"})
+		return
+	}
+
+	_, err := url.ParseRequestURI(inputURL.OriginalURL)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid URL. Please provide proper url."})
+		return
+	}
+
+	shortURL := inputURL.ShortURL
+	if shortURL == "" {
+		shortURL = generateShortURL()
+	}
+
+	var expirationTime time.Duration
+
+	loc, _ := time.LoadLocation("Asia/Kolkata")
+	if inputURL.ExpirationDateTime != "" {
+		expirationDateTime, err := time.ParseInLocation("2006-01-02T15:04", inputURL.ExpirationDateTime, loc)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid expiration date format. Please provide date in YYYY-MM-DD format."})
+			return
+		}
+
+		expirationDateTime = expirationDateTime.UTC()
+
+		expirationTime = expirationDateTime.Sub(time.Now())
+	} else {
+		expirationTime = time.Hour * 24
+	}
+
 	// Store the mapping in a database or cache (e.g., Redis)
-	err := redisClient.Set(shortURL, inputURL.OriginalURL, time.Hour*24).Err()
+	err = redisClient.Set(shortURL, inputURL.OriginalURL, expirationTime).Err()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to shorten URL"})
 		return
