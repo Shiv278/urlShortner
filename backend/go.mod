@@ -1,4 +1,4 @@
-module github.com/Shiv278/urlShortner
+module github.com/Shiv278/urlShortner/backend
 
 go 1.21.6
 
