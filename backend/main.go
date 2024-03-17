@@ -4,6 +4,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -37,9 +38,23 @@ func shortenURL(c *gin.Context) {
 		return
 	}
 
-	shortURL := generateShortURL()
+	if inputURL.OriginalURL == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "URL not provided"})
+		return
+	}
+
+	_, err := url.ParseRequestURI(inputURL.OriginalURL)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid URL. Please provide proper url."})
+		return
+	}
+
+	shortURL := inputURL.ShortURL
+	if shortURL == "" {
+		shortURL = generateShortURL()
+	}
 	// Store the mapping in a database or cache (e.g., Redis)
-	err := redisClient.Set(shortURL, inputURL.OriginalURL, time.Hour*24).Err()
+	err = redisClient.Set(shortURL, inputURL.OriginalURL, time.Hour*24).Err()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to shorten URL"})
 		return
